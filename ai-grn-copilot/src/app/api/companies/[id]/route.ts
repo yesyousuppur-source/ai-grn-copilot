@@ -7,16 +7,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const { id } = await params;
-
     const body = await req.json();
     const { data, error } = await supabase
       .from('companies')
-      .update(body)
+      .update(body as Record<string, unknown>)
       .eq('id', id)
       .eq('owner_id', user.id)
       .select()
       .single();
-
     if (error) throw error;
     return NextResponse.json({ data });
   } catch (err: unknown) {
@@ -31,13 +29,11 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const { id } = await params;
-
     const { error } = await supabase
       .from('companies')
       .delete()
       .eq('id', id)
       .eq('owner_id', user.id);
-
     if (error) throw error;
     return NextResponse.json({ success: true });
   } catch (err: unknown) {
