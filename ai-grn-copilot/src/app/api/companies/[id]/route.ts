@@ -10,7 +10,18 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const body = await req.json();
     const { data, error } = await supabase
       .from('companies')
-      .update(body as Record<string, unknown>)
+      .update({
+        name: body.name,
+        gstin: body.gstin,
+        address: body.address,
+        city: body.city,
+        state: body.state,
+        pincode: body.pincode,
+        phone: body.phone,
+        email: body.email,
+        logo_url: body.logo_url,
+        settings: body.settings,
+      })
       .eq('id', id)
       .eq('owner_id', user.id)
       .select()
