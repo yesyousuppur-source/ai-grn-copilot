@@ -20,7 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .select('company_id')
     .eq('user_id', user.id);
 
-  const memberIds = memberRows?.map((r) => r.company_id) || [];
+  const memberIds = memberRows?.map((r: any) => r.company_id) || [];
 
   let companiesQuery = supabase.from('companies').select('*');
   if (memberIds.length > 0) {
